@@ -24,6 +24,8 @@
       {% block navbar %}
           {% include 'includes/_navbar.html' %}
       {% endblock %}
+
+      {% include 'includes/_errorAlert.html' %}
       
       {% block content %}
       {% endblock %}
@@ -40,7 +42,6 @@
     <!-- Modals and Alerts -->
     {% include 'includes/_loginModal.html' %}
     {% include 'includes/_registerModal.html' %}
-    {% include 'includes/_errorAlert.html' %}
 
     {% block scripts %}
       <!-- Popper 2.10.2, Bootstrap 5.1.2 JavaScript -->
