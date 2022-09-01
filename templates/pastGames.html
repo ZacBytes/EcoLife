@@ -12,6 +12,7 @@
             <th scope="col">Age</th>
             <th scope="col">Money($)</th>
             <th scope="col">CO2(tonnes)</th>
+            <th scope="col">Difficulty</th>
           </tr>
         </thead>
         <tbody>
@@ -21,6 +22,7 @@
               <td>{{ pastGamesDict[game]["ageOfDeath"] }}</td>
               <td>${{ pastGamesDict[game]["money"] }}</td>
               <td>{{ pastGamesDict[game]["lifetimeCO2Score"] }}</td>
+              <td>{{ pastGamesDict[game]["gameDifficulty"] }}</td>
             </tr>
           {% endfor %}
         </tbody>

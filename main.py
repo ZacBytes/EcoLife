@@ -1,5 +1,6 @@
 from flask import Flask, render_template, session, request, redirect, url_for, render_template, flash
 from google.cloud.sql.connector import Connector
+from werkzeug.exceptions import HTTPException
 import os
 from classes.user import User
 import pymysql
@@ -51,20 +52,31 @@ userpool = sqlalchemy.create_engine(
     creator=userconn,
 )
 # PAGES ------------------------------------------------------------------------
+@app.errorhandler(HTTPException)
+def handle_exception(e):
+    name = e.name
+    code = e.code
+    description = e.description
+    return render_template('genericerror.html', name=name, code=code, description=description)
+
 @app.route('/')
 def home():
     for key in list(session.keys()):
-      if key != "userID":
+      if key != "userID" and key != "_flashes":
         session.pop(key)
     return render_template('home.html')
 
-#  TEMPORARY
+
 @app.route('/results')
 def results():
   if 'name' in session:
   #updating the previous results
-    User.saveGame(session['ageOfDeath'], session['money'], session['lifetimeCO2Score'])
-    return render_template('results.html')
+    User.saveGame(session['ageOfDeath'], session['money'], session['lifetimeCO2Score'], session['gameDifficulty'])
+    with pool.connect() as db_conn:
+      completedQns = session['completedQns']
+      completedQns_format = '(' + ', '.join(completedQns) + ')'
+      completedQns_list = db_conn.execute(f"SELECT * from Questions WHERE {age} BETWEEN ageRange_Min AND ageRange_Max AND id IN {completedQns_format} ORDER BY RAND()").fetchall()  
+    return render_template('results.html', completedQns_list=completedQns_list)
   else:
     return redirect(url_for('home'))
 
@@ -84,7 +96,9 @@ def startGame():
     session['name'] = request.form['plrName']
     session['money'] = 0
     session['currentQnId'] = 0
+    session['jobYearlySalary'] = 0
     session['lifetimeCO2Score'] = 0
+    session['gameDifficulty'] = request.form['radioDifficulty']
     session['completedQns'] = []
     return redirect(url_for('showQuestion'))
 
@@ -95,13 +109,11 @@ def showQuestion():
       age = session["age"]
       # completedQn ids need to be string
       completedQns = session['completedQns'] # Save array to session, question IDs added here to prevent repeat
-      if len(completedQns) == 0:
+      if len(completedQns) <= 0:
           questionRow = db_conn.execute(f"SELECT * from Questions WHERE {age} BETWEEN ageRange_Min AND ageRange_Max ORDER BY RAND() LIMIT 1").fetchone()
       else:
           completedQns_format = '(' + ', '.join(completedQns) + ')'
           questionRow = db_conn.execute(f"SELECT * from Questions WHERE {age} BETWEEN ageRange_Min AND ageRange_Max AND id NOT IN {completedQns_format} ORDER BY RAND() LIMIT 1").fetchone()
-          print(f"SELECT * from Questions WHERE {age} BETWEEN ageRange_Min AND ageRange_Max AND id NOT IN {completedQns_format} ORDER BY RAND() LIMIT 1")
-      #questionRow = db_conn.execute(f"SELECT * from Questions WHERE {age} BETWEEN ageRange_Min AND ageRange_Max ORDER BY RAND() LIMIT 1").fetchone()
       session['currentQnId'] = questionRow.id
   
     return render_template('question.html', session=session, questionRow = questionRow)
@@ -109,7 +121,17 @@ def showQuestion():
 
 @app.route('/ansQuestion', methods = ['GET'])
 def ansQuestion():
-    session['age'] += 5
+    # Determining age progression
+    gameDifficulty = session['gameDifficulty']
+    if gameDifficulty == 'Fast':
+        ageProgression = 15
+    elif gameDifficulty == 'Normal':
+        ageProgression = 10
+    else: # Default will be slow
+        ageProgression = 5
+      
+    session['money'] += ageProgression * session['jobYearlySalary']
+    session['age'] += ageProgression
   
     # Assign Co2
     response = int(request.args.get("response"))
@@ -123,11 +145,18 @@ def ansQuestion():
     completedQns = session['completedQns']
     completedQns.append(str(currentQnId))
     session['completedQns'] = completedQns
-        
+
+    # END GAME
     if session['age'] >= session['ageOfDeath']:
       lifetimeCO2 = round(session['lifetimeCO2Score'],3)
       session['lifetimeCO2Score'] = lifetimeCO2
-      return render_template('results.html', session=session)
+      if 'userID' in session:
+      #updating the previous results
+        User.saveGame(session['ageOfDeath'], session['money'], session['lifetimeCO2Score'], session['gameDifficulty'])
+      with pool.connect() as db_conn:
+        completedQns_format = '(' + ', '.join(completedQns) + ')'
+        completedQns_list = db_conn.execute(f"SELECT * from Questions WHERE id IN {completedQns_format} ORDER BY RAND()").fetchall()  
+      return render_template('results.html', session=session, completedQns_list=completedQns_list)
     else:
       return redirect(url_for('showQuestion'))
 
@@ -152,14 +181,24 @@ def login():
       user = User.attempt_Login(email, password)
       if user:
         session['userID'] = user.id
-        return redirect(url_for('home'))
+        flash('Logged in!', 'Success')
+      else:
+        flash('Invalid email or password!', 'Error')
+      return redirect(url_for('home'))
 
 
 @app.route('/logOut')
 def logOut():
   if User.logOut():
     return redirect(url_for('home'))
-    
+
+
+# JOBS -------------------------------------------------------------------------
+@app.route('/setJobYearlySalary', methods = ['GET'])
+def setJobYearlySalary():
+    salary = int(request.args.get("salary"))
+    session['jobYearlySalary'] = salary
+    return redirect(url_for('showQuestion'))
 
 
 

@@ -1,9 +1,9 @@
 <header class="mb-auto">
     <div>
-      <nav class="nav nav-masthead justify-content-center">
+      <nav class="navbar navbar-expand-lg navbar-expand-sm nav-masthead justify-content-center">
         {% if 'name' in session %}
           <a class="nav-link" style="color: #FBF9E1;">Playing as <b>{{ session['name'] }}</b></a>
-          <a class="btn btn-danger rounded-pill" href="{{ url_for('home') }}">End Game</a>
+          <a class="btn btn-danger rounded-pill nav-link" style="color: #FBF9E1;" href="{{ url_for('home') }}">End Game</a>
         {% else %}
           {% if 'userID' in session %}
             <a class="nav-link" aria-current="page" href="{{ url_for('home') }}" style="color: #FBF9E1;">Home</a>
@@ -15,7 +15,6 @@
             <a class="btn nav-link"  data-bs-toggle="modal" data-bs-target="#registerModal" style="color: #FBF9E1;">Register</a>
           {% endif %}
         {% endif %}
-          <a class="btn nav-link" href="{{ url_for('results') }}">Temporary button to go to reuslts page</a>
       </nav>
     </div>
   </header>

@@ -1,0 +1,26 @@
+<div class="modal fade" id="jobsModal" tabindex="-1" aria-labelledby="jobsModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content" style="background-color: #5A6631;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="jobsModal">Jobs</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                {% if session['age'] < 16 %}
+                  <p>⚠️ You must be above 16 to work!</p>
+                {% else %}
+                  {% if 'jobYearlySalary' in session and session['jobYearlySalary'] > 0 %}
+                    <a class="btn btn-danger" href="{{ url_for('setJobYearlySalary', salary=0) }}" style="color: #5A6631;">End Job</a>
+                  {% else %}
+                    <a class="btn" href="{{ url_for('setJobYearlySalary', salary=22000) }}" style="background-color: #FBF9E0; color: #5A6631;">MekDonalds // Salary: $22000/yr</a>
+                    <a class="btn" href="{{ url_for('setJobYearlySalary', salary=15000) }}" style="background-color: #FBF9E0; color: #5A6631;">Cashier // Salary: $15000/yr</a>
+                    <a class="btn" href="{{ url_for('setJobYearlySalary', salary=73610) }}" style="background-color: #FBF9E0; color: #5A6631;">Physician // Salary: $73610/yr</a>
+                    <a class="btn" href="{{ url_for('setJobYearlySalary', salary=66000) }}" style="background-color: #FBF9E0; color: #5A6631;">Dentist // Salary: $66000/yr</a>
+                  <a class="btn" href="{{ url_for('setJobYearlySalary', salary=31423) }}" style="background-color: #FBF9E0; color: #5A6631;">Fashion Designer // Salary: $31423/yr</a>
+                  {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div> 

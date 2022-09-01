@@ -3,31 +3,17 @@
 
 {% block content %}
 <br>
-<!-- Statistics -->
-<div class="card" style="position:fixed;top:200px;left:20px;">
-  <div class="card-body">
-    <h5 class="card-title stats-value">Lifetime</h5>
-    <p class="card-text"><small class="text-muted">Age</small></p>
-    {% if session['age']<10 %}
-      <p class="stats-value">0{{ session['age'] }}</p>
-    {% else %}
-      <p class="stats-value">{{ session['age'] }}</p>
-    {% endif %}
-    <p class="card-text"><small class="text-muted">Money</small></p>
-    <p class="card-text stats-value">${{ session['money'] }}</p>
-  </div>
-</div>
-<br>
-
 <!-- Question -->
 <div class="container">
   <div class="row">
     <div class="col-10">
       <!-- Question -->
-      <div class="card" style="width: 50rem; height: 700px;">
+      <div class="card mb-2" style="height:700px;width:700px;">
         <!-- Question Part -->
         <div class="card-body">
+          
           <h5 class="card-title text-center" style="color: #5A6631 !important;">{{ questionRow.questionText }}</h5>
+          
         </div>
         <!-- Question Image -->
         <img src="{{ questionRow.ImageLink }}" class="card-img-bottom mx-auto img-fluid" style="object-fit: cover;width: 30rem;height: 250px;">
@@ -41,14 +27,36 @@
             {% endif %}
           </div>
         </div>
-        <!-- DYK Part -->
+        <!-- DYK Part 
         <div class="card-body">
           <h5 class="card-title text-center" style="color: #5A6631 !important;">Did you know? </h5>
           <p class="card-text text-center" style="color: #5A6631 !important;">Electric cars are actually better for the environment. </p>
+        </div> -->
+      </div>
+    </div>
+    <br>
+    <div class="col">
+      <!-- Statistics -->
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title stats-value">Lifetime</h5>
+          <p class="card-text"><small class="text-muted">Age</small></p>
+          {% if session['age'] and session['age']<10 %}
+            <p class="stats-value">0{{ session['age'] }}</p>
+          {% elif session['age'] %}
+            <p class="stats-value">{{ session['age'] }}</p>
+          {% endif %}
+          <p class="card-text"><small class="text-muted">Money</small></p>
+          <p class="card-text stats-value">${{ session['money'] }}</p>
+          <p class="card-text"><small class="text-muted">Difficulty</small></p>
+          <p class="card-text stats-value">{{ session['gameDifficulty'] }}</p>
+
+          <a class="btn button-custom nav-link"  data-bs-toggle="modal" data-bs-target="#jobsModal" style="background-color: #5B662E; color: #FBF9E1;">Jobs</a>
         </div>
       </div>
     </div>
-  </div>
 </div>
+<br>
 
+{% include 'includes/_jobsModal.html' %}
 {% endblock %}

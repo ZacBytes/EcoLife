@@ -3,11 +3,46 @@
 
 {% block content %}
   <main class="px-3">
-    <h1 class="fs-1 fw-bold">EcoLife <img src="static/potted_plant.svg"></img></h1>
+    <h1 class="fs-1 fw-bold hover-this">EcoLife <img src="static/potted_plant.svg"></img></h1>
     <p class="lead">Carbon Footprint Life Simulator</p>
+    
     <form action="{{ url_for('startGame') }}" method="post">
-      <div class="mb-3">
-        <input type="text" class="form-control rounded-pill" name="plrName" id="plrName" required placeholder="Player Name">
+
+      <div class="container mb-3 p-0">
+        <div class="row g-0" >
+          <div class="col me-2">
+            <input type="text" class="form-control rounded-pill" name="plrName" id="plrName" required placeholder="Player Name">
+          </div>
+          <div class="col-3">
+            <div class="dropdown rounded-pill bg-white h-100 align-middle">
+              <a class="dropdown-toggle align-middle h-100 m-0"  style="text-decoration: none; color: #6D757D; position:relative; top:6px;" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+              &nbsp;Difficulty
+              </a>
+            
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+      
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="radioDifficulty" id="flexRadioDefault1" value="Slow">
+                  <label class="form-check-label" for="flexRadioDefault1">
+                    Slow 🐢
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="radioDifficulty" id="flexRadioDefault2" checked value="Normal">
+                  <label class="form-check-label" for="flexRadioDefault2" >
+                    Normal
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="radioDifficulty" id="flexRadioDefault3" value="Fast">
+                  <label class="form-check-label" for="flexRadioDefault3">
+                    Fast 🐇
+                  </label>
+                </div>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
       
       <button type="submit" class="button-custom btn rounded-pill w-100" style="!important;">Start Game</button>

@@ -7,8 +7,19 @@
       <h1 class="fs-1 fw-bold">You Died at Age {{ session["ageOfDeath"] }}</h1>
       <p class="lead">You emitted {{ session['lifetimeCO2Score'] }} metric tons of CO2.</p>
       <br>
+      {% if completedQns_list %}
+      <h1 class="fs-1 fw-bold">Did you know?</h1>
+      {% for qn in completedQns_list %}
+        <div class="card" id="item-card" style="margin-top: 20px; background-color: #5A6631; ">
+            <h1 class="lead" style="padding:5px;">{{ qn[11] }}</h1>
+        </div>
+      {% endfor %}
+      {% endif %}
       
+      <!--
       <p class="lead">Results are only saved when you register an account with us.<br>View results in Past Games after you end the game.</p> 
+      -->
+    
   </div>
 
 {% endblock %}

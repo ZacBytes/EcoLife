@@ -1,0 +1,22 @@
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+      {% for category, message in messages %}
+          {% if category == "Error" %}
+          <div class="alert alert-danger alert-dismissible fade show align-items-center" role="alert">
+            <i class="fas fa-exclamation-triangle"></i> {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% elif category == "Success" %}
+          <div class="alert alert-success alert-dismissible fade show align-items-center" role="alert">
+            <i class="fas fa-check"></i> {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% elif category == "Warning" %}
+          <div class="alert alert-warning alert-dismissible fade show align-items-center" role="alert">
+            <i class="fas fa-exclamation-triangle"></i> {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endif %}
+      {% endfor %}
+  {% endif %}
+{% endwith %}

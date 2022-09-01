@@ -62,7 +62,7 @@ class User:
         session.pop('userID')
         return True
 
-    def saveGame(ageOfDeath, money, co2):
+    def saveGame(ageOfDeath, money, co2, gameDifficulty):
       with pool.connect() as db_conn:
         userID = session['userID']
         resultsJSON = db_conn.execute(f"SELECT pastGameIDs FROM Users WHERE id = '{userID}'").fetchone()[0]
@@ -72,6 +72,7 @@ class User:
         resultsDict[gameID]["ageOfDeath"] = ageOfDeath
         resultsDict[gameID]["money"] = money
         resultsDict[gameID]["lifetimeCO2Score"] = co2
+        resultsDict[gameID]["gameDifficulty"] = gameDifficulty
         db_conn.execute(f"UPDATE Users SET PastGameIDs = '{json.dumps(resultsDict)}' WHERE id = '{userID}'")
 
     def retrieveGamesDict():
