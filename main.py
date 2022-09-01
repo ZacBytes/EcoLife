@@ -22,10 +22,10 @@ connector = Connector()
 
 def getconn() -> pymysql.connections.Connection:
     conn: pymysql.connections.Connection = connector.connect(
-        os.environ['SQL_InstanceNameID'],
+        'long-sum-361008:asia-southeast1-c:environ-game',
         "pymysql",
         user="root",
-        password = os.environ['SQL_Password'],
+        password = '"ph/y0,dHT&9t5?s',
         db="questions"
     )
     return conn
@@ -38,10 +38,10 @@ pool = sqlalchemy.create_engine(
 #to connect to user database
 def userconn() -> pymysql.connections.Connection:
     conn: pymysql.connections.Connection = connector.connect(
-        os.environ['SQL_InstanceNameID'],
+        'long-sum-361008:asia-southeast1-c:environ-game',
         "pymysql",
         user="root",
-        password = os.environ['SQL_Password'],
+        password = '"ph/y0,dHT&9t5?s',
         db="users"
     )
     return conn
@@ -62,6 +62,7 @@ def home():
 @app.route('/results')
 def results():
   if 'name' in session:
+  #updating the previous results
     User.saveGame(session['ageOfDeath'], session['money'], session['lifetimeCO2Score'])
     return render_template('results.html')
   else:
