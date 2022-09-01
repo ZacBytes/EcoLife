@@ -1,0 +1,26 @@
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background-color: #5A6631;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModal">Login</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="/login">
+                    <div class="mb-3">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" minlength="6" maxlength="20" required/>
+                    </div>
+                    <div class="modal-footer d-block">
+                        <p class="float-start">No account yet? <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal">Register</a></p>
+                        <button type="submit" value="login" class="btn btn-primary float-end">Login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

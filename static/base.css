@@ -1,0 +1,33 @@
+.navbar-custom {
+    background-color: #ccffee;
+}
+
+.button-custom {
+    background-color: #FBF9E1;
+    color: #5A6631;
+    border-color: #5A6631;
+    border-width: 2px;
+    !important;
+}
+
+.button-custom:hover {
+    background-color: #5A6631;
+    color: #FBF9E1;
+    border-color: #FBF9E1;
+    border-width: 2px;
+}
+
+.button-custom:active {
+    background-color: #5A6631;
+    color: #FBF9E1;
+    border-color: #FBF9E1;
+    border-width: 2px;
+}
+
+.stats-cat {
+    color:grey;
+}
+
+.stats-value {
+    color: black;
+}
