@@ -12,7 +12,7 @@ import random
 DEBUG = True
 app = Flask(__name__)
 app.config.from_object(__name__)
-app.config['SECRET_KEY'] = 'ZDHX218H9H2KSOS36'
+app.config['SECRET_KEY'] = "ZDHX218H9H2KSOS36"
 app.config['SESSION_COOKIE_SECURE'] = True #secure session cookies
 app.config['MAX_CONTENT_LENGTH'] = 10 * 1000 * 1000# RESOURCE LIMITING
 
@@ -22,10 +22,10 @@ connector = Connector()
 
 def getconn() -> pymysql.connections.Connection:
     conn: pymysql.connections.Connection = connector.connect(
-        "long-sum-361008:asia-southeast1-c:environ-game",
+        os.environ['SQL_InstanceNameID'],
         "pymysql",
         user="root",
-        password='"ph/y0,dHT&9t5?s',
+        password = os.environ['SQL_Password'],
         db="questions"
     )
     return conn
@@ -38,10 +38,10 @@ pool = sqlalchemy.create_engine(
 #to connect to user database
 def userconn() -> pymysql.connections.Connection:
     conn: pymysql.connections.Connection = connector.connect(
-        "long-sum-361008:asia-southeast1-c:environ-game",
+        os.environ['SQL_InstanceNameID'],
         "pymysql",
         user="root",
-        password='"ph/y0,dHT&9t5?s',
+        password = os.environ['SQL_Password'],
         db="users"
     )
     return conn
